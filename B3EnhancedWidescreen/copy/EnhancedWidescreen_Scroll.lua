@@ -153,6 +153,7 @@ end
 
 		EnhancedWidescreen_Input_Check()
 
+		local userScrollingAllowed = EnhancedWidescreen_Input_IsWorldScreenAcceptingInput() and not EnhancedWidescreen_Scroll_IsAutoScrolling()
 		local isMiddleMouseDown = EnhancedWidescreen_Input_IsDown(4) -- VK_MBUTTON
 
 		if isMiddleMouseDown then
@@ -162,7 +163,7 @@ end
 			local deltaX = IEex_LabelDefault("oldX", 0) - cursorX
 			local deltaY = IEex_LabelDefault("oldY", 0) - cursorY
 
-			if EnhancedWidescreen_Input_IsWorldScreenAcceptingInput() and not EnhancedWidescreen_Scroll_IsAutoScrolling() then
+			if userScrollingAllowed then
 				EnhancedWidescreen_Scroll_AdjustViewPosition(deltaX, deltaY)
 			end
 
@@ -177,7 +178,7 @@ end
 
 		local deltaFactor = EnhancedWidescreen_Scroll_CalculateDeltaFactor()
 
-		if not isMiddleMouseDown then
+		if not isMiddleMouseDown and userScrollingAllowed then
 
 			local m_nScrollState = visibleArea.m_nScrollState
 			local m_nKeyScrollState = EnhancedWidescreen_Scroll_ResolveScrollState()

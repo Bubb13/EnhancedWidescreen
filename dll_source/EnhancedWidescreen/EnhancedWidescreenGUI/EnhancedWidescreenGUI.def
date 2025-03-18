@@ -1,0 +1,4 @@
+LIBRARY
+EXPORTS
+    InitEnhancedWidescreenGUI @1
+    AskResolution @2

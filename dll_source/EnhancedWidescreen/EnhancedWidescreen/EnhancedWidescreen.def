@@ -1,0 +1,4 @@
+LIBRARY EnhancedWidescreen.dll
+EXPORTS
+	InitBindings @1
+	OpenBindings @2

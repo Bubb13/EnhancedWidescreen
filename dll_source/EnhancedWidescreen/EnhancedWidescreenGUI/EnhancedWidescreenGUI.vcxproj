@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <ProjectGuid>{EADB3586-1667-4211-9B61-F0BFB1C6CFFC}</ProjectGuid>
+    <Keyword>MFCDLLProj</Keyword>
+    <RootNamespace>EnhancedWidescreenGUI</RootNamespace>
+    <ProjectName>EnhancedWidescreenGUI</ProjectName>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\User_Macros.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>SHARED_MEMORY_DLL;WIN32;_WINDOWS;NDEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalOptions>-DISOLATION_AWARE_ENABLED %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)headers\EnhancedWidescreenGUI;$(SolutionDir)common_include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ModuleDefinitionFile>.\EnhancedWidescreenGUI.def</ModuleDefinitionFile>
+      <AdditionalDependencies>ddraw.lib;$(SolutionDir)common_lib\InfinityLoaderCommon.lib</AdditionalDependencies>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <PostBuildEvent>
+      <Command>powershell.exe -ExecutionPolicy Unrestricted -file COPY_TO_GAME.ps1 -SolutionDir "$(SolutionDir)." -OutDir "$(OutDir)." -GamePath "$(DEBUGGER_WORKING_DIRECTORY)."</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="EnhancedWidescreenGUI.def" />
+    <None Include="res\EnhancedWidescreenGUI.rc2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="EnhancedWidescreenGUI.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="EnhancedWidescreenGUI.dll.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\EnhancedWidescreenGUI\CMyBox.cpp" />
+    <ClCompile Include="source\EnhancedWidescreenGUI\common.cpp" />
+    <ClCompile Include="source\EnhancedWidescreenGUI\EnhancedWidescreenGUI.cpp" />
+    <ClCompile Include="source\EnhancedWidescreenGUI\MyDialog.cpp" />
+    <ClCompile Include="source\EnhancedWidescreenGUI\pch.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\common_include\EnhancedWidescreenGUI\enhanced_widescreen_gui_api.h" />
+    <ClInclude Include="headers\EnhancedWidescreenGUI\CMyBox.h" />
+    <ClInclude Include="headers\EnhancedWidescreenGUI\EnhancedWidescreenGUI.h" />
+    <ClInclude Include="headers\EnhancedWidescreenGUI\framework.h" />
+    <ClInclude Include="headers\EnhancedWidescreenGUI\MyDialog.h" />
+    <ClInclude Include="headers\EnhancedWidescreenGUI\pch.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="targetver.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

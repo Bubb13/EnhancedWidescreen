@@ -1,0 +1,2 @@
+#include "pch.h"
+#include "InfinityLoader/infinity_loader_common_shared_dll_memory.cpp"

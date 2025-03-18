@@ -1,0 +1,10 @@
+
+IEex_OpenLuaBindings("EnhancedWidescreen")
+IEex_DoFile("EnhancedWidescreen_Area")
+IEex_DoFile("EnhancedWidescreen_Dev")
+IEex_DoFile("EnhancedWidescreen_GameState")
+IEex_DoFile("EnhancedWidescreen_GUI")
+IEex_DoFile("EnhancedWidescreen_Hotkeys")
+IEex_DoFile("EnhancedWidescreen_Input")
+IEex_DoFile("EnhancedWidescreen_Resource")
+IEex_DoFile("EnhancedWidescreen_Scroll")

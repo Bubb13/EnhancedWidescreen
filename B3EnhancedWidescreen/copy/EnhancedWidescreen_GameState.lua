@@ -1,0 +1,4 @@
+
+function EnhancedWidescreen_GameState_Extern_OnAfterChitinInitialized()
+	EnhancedWidescreen_Resource_IndexResources()
+end

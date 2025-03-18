@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Module Definition">
+      <UniqueIdentifier>{86251840-7f24-4dd5-81fc-e7ab0084fc42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manifest">
+      <UniqueIdentifier>{eee2a2ac-8d5a-4ed0-834d-a0727fa46caf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\EnhancedWidescreenGUI">
+      <UniqueIdentifier>{0c07e778-77c5-4f3b-bf39-73425a45e665}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\EnhancedWidescreenGUI">
+      <UniqueIdentifier>{40c293c0-fe4b-4e17-a5c1-04f6225f8bfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\framework">
+      <UniqueIdentifier>{ec86b0ef-2718-467f-8b15-49ef91852bc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\common">
+      <UniqueIdentifier>{d637a547-93ec-4c4f-b1c6-b3dac944862a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\EnhancedWidescreenGUI.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="EnhancedWidescreenGUI.def">
+      <Filter>Module Definition</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="EnhancedWidescreenGUI.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="EnhancedWidescreenGUI.dll.manifest">
+      <Filter>Manifest</Filter>
+    </Manifest>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\EnhancedWidescreenGUI\MyDialog.cpp">
+      <Filter>Source Files\EnhancedWidescreenGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EnhancedWidescreenGUI\pch.cpp">
+      <Filter>Source Files\EnhancedWidescreenGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EnhancedWidescreenGUI\CMyBox.cpp">
+      <Filter>Source Files\EnhancedWidescreenGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EnhancedWidescreenGUI\EnhancedWidescreenGUI.cpp">
+      <Filter>Source Files\EnhancedWidescreenGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EnhancedWidescreenGUI\common.cpp">
+      <Filter>Source Files\EnhancedWidescreenGUI</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="headers\EnhancedWidescreenGUI\CMyBox.h">
+      <Filter>Header Files\EnhancedWidescreenGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\EnhancedWidescreenGUI\EnhancedWidescreenGUI.h">
+      <Filter>Header Files\EnhancedWidescreenGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\EnhancedWidescreenGUI\framework.h">
+      <Filter>Header Files\EnhancedWidescreenGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\EnhancedWidescreenGUI\MyDialog.h">
+      <Filter>Header Files\EnhancedWidescreenGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\EnhancedWidescreenGUI\pch.h">
+      <Filter>Header Files\EnhancedWidescreenGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files\framework</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files\framework</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common_include\EnhancedWidescreenGUI\enhanced_widescreen_gui_api.h">
+      <Filter>Header Files\common</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

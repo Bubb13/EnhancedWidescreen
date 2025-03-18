@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\EnhancedWidescreen\common.cpp" />
+    <ClCompile Include="source\EnhancedWidescreen\EnhancedWidescreen.cpp" />
+    <ClCompile Include="source\EnhancedWidescreen\EnhancedWidescreen_lua.cpp" />
+    <ClCompile Include="source\EnhancedWidescreen\generated\engine_structs_bg1_internal_pointers.cpp" />
+    <ClCompile Include="source\EnhancedWidescreen\generated\LuaBindings-bg1_generated.cpp" />
+    <ClCompile Include="source\EnhancedWidescreen\generated\LuaBindings-bg1_generated_baseclass_offsets.cpp" />
+    <ClCompile Include="source\EnhancedWidescreen\init_time.cpp" />
+    <ClCompile Include="source\EnhancedWidescreen\main.cpp" />
+    <ClCompile Include="source\EnhancedWidescreen\raw_input.cpp" />
+    <ClCompile Include="source\EnhancedWidescreen\thread_watcher.cpp" />
+    <ClCompile Include="source\EnhancedWidescreen\window_proc.cpp" />
+    <ClCompile Include="source\ThreadWatcher\thread_watcher_mapped_memory.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="headers\EnhancedWidescreen\EnhancedWidescreen.h" />
+    <ClInclude Include="headers\EnhancedWidescreen\EnhancedWidescreen_lua.h" />
+    <ClInclude Include="headers\EnhancedWidescreen\init_time.h" />
+    <ClInclude Include="headers\EnhancedWidescreen\lua_bindings.h" />
+    <ClInclude Include="headers\EnhancedWidescreen\raw_input.h" />
+    <ClInclude Include="headers\EnhancedWidescreen\thread_watcher.h" />
+    <ClInclude Include="headers\EnhancedWidescreen\window_proc.h" />
+    <ClInclude Include="headers\EnhancedWidescreen_generated\engine_structs_bg1.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="COPY_TO_GAME.ps1" />
+    <None Include="EnhancedWidescreen.def" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{5d96a1b5-6b58-49d5-92c1-8164041dd87e}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\User_Macros.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>SHARED_MEMORY_DLL;_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalIncludeDirectories>$(ProjectDir)headers\EnhancedWidescreen;$(ProjectDir)headers\EnhancedWidescreen_generated;$(SolutionDir)common_include</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalDependencies>$(OutDir)EnhancedWidescreenGUI.lib;$(SolutionDir)common_lib\InfinityLoaderCommon.lib;$(SolutionDir)common_lib\LuaProvider.lib;$(SolutionDir)common_lib\LuaBindingsCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ModuleDefinitionFile>EnhancedWidescreen.def</ModuleDefinitionFile>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
+    </Link>
+    <PostBuildEvent>
+      <Command>powershell.exe -ExecutionPolicy Unrestricted -file COPY_TO_GAME.ps1 -SolutionDir "$(SolutionDir)." -OutDir "$(OutDir)." -GamePath "$(DEBUGGER_WORKING_DIRECTORY)."</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

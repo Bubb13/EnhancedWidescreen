@@ -109,7 +109,7 @@ IEex_DisableCodeProtection()
 	}))
 
 	-- CGameArea::OnActionButtonDblClk() - Reject world coordinates (-1, -1) when handling double left click
-	IEex_HookBeforeCall(0x4877F6, IEex_FlattenTable({
+	IEex_HookNOPs(0x4877F6, 0, IEex_FlattenTable({
 		{[[
 			cmp dword ptr ss:[ebp-0x1C], -1
 			jne not_reject
@@ -120,6 +120,8 @@ IEex_DisableCodeProtection()
 			jmp #L(return)
 
 			not_reject:
+			call #L(EnhancedWidescreen_CInfinity::SetViewPositionAdjustToCenter)
+			jmp #L(return)
 		]]},
 	}))
 
@@ -407,7 +409,7 @@ IEex_DisableCodeProtection()
 	end
 
 	-- CGameArea::OnActionButtonDblClk()
-	setViewPositionAdjustToCenter(0x4877F6)
+	--setViewPositionAdjustToCenter(0x4877F6) -- Handled in another patch above
 
 	-- CInfGame::CenterOnCharacterInPortraitIndex()
 	setViewPositionAdjustToCenter(0x597297)

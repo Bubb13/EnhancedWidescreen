@@ -140,7 +140,7 @@ end
 
 EnhancedWidescreen_Resource_FileTypeToUserType = {
 	[0x3EA] = "CResUI", -- CHU
-	[0x3EC] = "CResMosaic", -- CHU
+	[0x3EC] = "CResMosaic", -- MOS
 }
 
 function EnhancedWidescreen_Resource_Demand(resref, extension)

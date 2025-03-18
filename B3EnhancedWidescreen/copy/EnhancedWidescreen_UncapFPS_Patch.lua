@@ -1,9 +1,9 @@
 
-IEex_UncapFPS_Enabled = true
+EnhancedWidescreen_UncapFPS_Enabled = true
 
 (function()
 
-	if not IEex_UncapFPS_Enabled then
+	if not EnhancedWidescreen_UncapFPS_Enabled then
 		return
 	end
 
@@ -121,71 +121,6 @@ IEex_UncapFPS_Enabled = true
 		call dword ptr ds:[0x83446C] ; GetCursorPos
 		jmp #L(return)
 	]]})
-
-	--------------------------------------------------------------------------------------------------------------
-	-- Remove unnecessary SleepEx() calls                                                                       --
-	--------------------------------------------------------------------------------------------------------------
-	--   Slightly speeds up loading. Note that these patches are made here, and not in IEex_LoadTimes_Patch.lua --
-	--   because the vanilla game loop deadlocks without these sleep calls.                                     --
-	--------------------------------------------------------------------------------------------------------------
-
-	-- CInfGame_GiveUpAreaListsThenYieldToSyncThread()
-	--IEex_WriteAssembly(0x59FB3C, {"!repeat(6,!nop)"})
-	--IEex_WriteAssembly(0x59FA95, {"!repeat(6,!nop)"})
-	--IEex_WriteAssembly(0x59FB0C, {"!repeat(6,!nop)"})
-
-	----------------------------------------------------------------------------------------------
-	-- Allow the sync thread to run while the async thread is processing an area fade effect    --
-	----------------------------------------------------------------------------------------------
-	--   There is a visible stutter in rendering without this patch - for example, when asking  --
-	--   Hedron to watch over you rest. It is safe for the sync thread to run in this situation --
-	--   because the async thread is just spinning.                                             --
-	----------------------------------------------------------------------------------------------
-
-	-- Entering the area fade loop
-	-- IEex_HookJumpOnFail(0x4FFF1F, 7, {[[
-
-	-- 	!push_all_registers_iwd2
-
-	-- 	; Allow the sync thread to run concurrently with me (the async thread) ;
-	-- 	!push_byte 01
-	-- 	!call >IEex_Helper_SetSyncThreadAllowedToRunWithoutSignal
-
-	-- 	!pop_all_registers_iwd2
-	-- ]]})
-
-	-- Leaving the area fade loop
-	-- IEex_HookReturnNOPs(0x4FFF83, 0, {[[
-	-- 	;
-	-- 	  Reimplement the instructions I clobbered. Normally I would use IEex_HookJumpOnFail() here, but there aren't
-	-- 	  enough bytes after the jump that can be clobbered, (only 4, another instruction jumps to the 5th).
-	-- 	;
-	-- 	!call_esi
-	-- 	!dec_edi
-	-- 	!jnz_dword :4FFF33
-
-	-- 	; Leaving the area fade loop ;
-
-	-- 	!push_all_registers_iwd2
-
-	-- 	;
-	-- 	  Disallow the sync thread from running concurrently with me (the async thread)
-	-- 	  and make sure the sync thread is yielding before I resume
-	-- 	;
-	-- 	!call >IEex_Helper_CommandAndWaitForSyncThreadYield
-
-	-- 	!pop_all_registers_iwd2
-	-- 	!jmp_dword :4FFF88
-	-- ]]})
-
-	-----------------------------------------------------------------------------
-	-- Fix main menu's "Quit Game" -> "Cancel" causing the game to freeze when --
-	-- subsequently attempting "New Game" / "Load Game" / "Quick Load". Seems  --
-	-- to be a race condition taking advantage of the higher sync thread tps.  --
-	-----------------------------------------------------------------------------
-
-	--IEex_WriteAssembly(0x6029F7, {"!repeat(7,!nop)"})
-
 
 	IEex_EnableCodeProtection()
 

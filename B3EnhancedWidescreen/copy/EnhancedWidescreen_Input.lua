@@ -44,9 +44,9 @@ function EnhancedWidescreen_Input_CheckClient(clientId)
 	-- Locks the Raw Input implementation. Key states / the pressed keys stack will not be updated during the critical section.
 	EnhancedWidescreen_DLL_RunWithRawInputLock(function()
 		for key = 0x1, 0xFE do
-			-- IEex_Helper_GetAsyncKeyStateClient() allows up to 15 ([0-14]) clients (0 = engine) to query key state while
-			-- each having their own "pressed since last poll" state. The export "IEex_Helper_GetAsyncKeyStateWrapper" is
-			-- IEex_Helper_GetAsyncKeyStateClient() with nClient = 0.
+			-- EnhancedWidescreen_DLL_GetAsyncKeyStateClient() allows up to 15 ([0-14]) clients (0 = engine) to query key state while
+			-- each having their own "pressed since last poll" state. The export "EnhancedWidescreen_GetAsyncKeyStateWrapper" is
+			-- EnhancedWidescreen_DLL_GetAsyncKeyStateClient() with nClient = 0.
 			keyStates[key] = EnhancedWidescreen_DLL_GetAsyncKeyStateClient(clientId, key)
 		end
 		EnhancedWidescreen_Input_PressedKeysStack = EnhancedWidescreen_DLL_GetPressedKeysStackNL()

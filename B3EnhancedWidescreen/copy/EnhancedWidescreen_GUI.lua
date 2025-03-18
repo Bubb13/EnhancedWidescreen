@@ -3,7 +3,6 @@
 -- Constants --
 ---------------
 
-EnhancedWidescreen_GUI_TopHeight = 6
 EnhancedWidescreen_GUI_SidebarWidth = 64
 
 if IEex_InSyncState then
@@ -267,13 +266,10 @@ EnhancedWidescreen_GUI_SetAutoScrollDest_RetPtrToCallSrc = {
 	[0x6711EF] = EnhancedWidescreen_GUI_SetAutoScrollDest_CallSrc.CScreenWorld_EndDialog,
 }
 
--- EnhancedWidescreen_GUI_InstantScrollRangeX = EnhancedWidescreen_GUI_ResolutionWidth * 700 / 640
--- EnhancedWidescreen_GUI_InstantScrollRangeY = EnhancedWidescreen_GUI_ResolutionHeight * 700 / 480
 EnhancedWidescreen_GUI_InstantScrollRangeX = EnhancedWidescreen_GUI_ResolutionWidth * 2 / 3 * math.sqrt(2)
 EnhancedWidescreen_GUI_InstantScrollRangeY = EnhancedWidescreen_GUI_ResolutionHeight * 2 / 3 * math.sqrt(2)
 EnhancedWidescreen_GUI_InstantScrollRangeXSquared = EnhancedWidescreen_GUI_InstantScrollRangeX * EnhancedWidescreen_GUI_InstantScrollRangeX
 EnhancedWidescreen_GUI_InstantScrollRangeYSquared = EnhancedWidescreen_GUI_InstantScrollRangeY * EnhancedWidescreen_GUI_InstantScrollRangeY
-EnhancedWidescreen_GUI_ScrollSpeedRatio = EnhancedWidescreen_GUI_ResolutionWidth / 640
 
 function EnhancedWidescreen_GUI_Extern_AdjustAutoScrollDest(retPtr, xRef, yRef, speedRef)
 
@@ -336,22 +332,22 @@ function EnhancedWidescreen_GUI_Extern_AdjustLocalMapViewPosition(mapButton)
 
 	local allowedOutOfBoundsLeft = EnhancedWidescreen.allowedOutOfBoundsLeft
 	local allowedOutOfBoundsRight = EnhancedWidescreen.allowedOutOfBoundsRight
-    local allowedOutOfBoundsTop = EnhancedWidescreen.allowedOutOfBoundsTop
+	local allowedOutOfBoundsTop = EnhancedWidescreen.allowedOutOfBoundsTop
 	local allowedOutOfBoundsBottom = EnhancedWidescreen.allowedOutOfBoundsBottom
 
 	local rViewPort = infinity.m_rViewPort
 	local nViewportWidth = rViewPort.right - rViewPort.left;
-    local nViewportHeight = rViewPort.bottom - rViewPort.top;
+	local nViewportHeight = rViewPort.bottom - rViewPort.top;
 
 	local nEffectiveViewportWidth = nViewportWidth - allowedOutOfBoundsLeft - allowedOutOfBoundsRight
-    local nEffectiveViewportHeight = nViewportHeight - allowedOutOfBoundsTop - allowedOutOfBoundsBottom
+	local nEffectiveViewportHeight = nViewportHeight - allowedOutOfBoundsTop - allowedOutOfBoundsBottom
 
 	local nAreaWidth = infinity.m_nAreaWidth
 	local nAreaHeight = infinity.m_nAreaHeight
 
 	local rViewPosition = mapButton.m_rViewPosition
 
-    if nEffectiveViewportWidth <= nAreaWidth then
+	if nEffectiveViewportWidth <= nAreaWidth then
 		rViewPosition.left = rViewPosition.left + allowedOutOfBoundsLeft
 		rViewPosition.right = rViewPosition.right - allowedOutOfBoundsRight - 1
 	else

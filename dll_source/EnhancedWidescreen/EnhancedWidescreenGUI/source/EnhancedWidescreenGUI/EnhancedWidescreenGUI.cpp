@@ -322,7 +322,7 @@ static void __stdcall initCallBack(MyDialog* dialog, void* user)
 	scrollbarInfo.cbSize = sizeof(SCROLLBARINFO);
 	GetScrollBarInfo(list.GetSafeHwnd(), OBJID_VSCROLL, &scrollbarInfo);
 	const RECT& scrollbarRect = scrollbarInfo.rcScrollBar;
-	
+
 	// Calculate list dimensions
 	const int halfScreenHeight = screenHeight / 2;
 	const int listHeight = listContentHeight <= halfScreenHeight

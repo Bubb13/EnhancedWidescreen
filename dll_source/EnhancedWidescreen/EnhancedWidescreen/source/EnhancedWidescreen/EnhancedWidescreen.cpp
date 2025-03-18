@@ -345,7 +345,7 @@ WPARAM CChitin::Export_Update(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPST
         {
             signalAsyncThread();
         }
-        
+
         waitForSyncThreadSignal();
         //FPrint("Sync thread signalled...\n");
 
@@ -1439,7 +1439,7 @@ int _stdcall Export_CCacheStatusShimMosaicRender(CVidMosaic* pThis, int nDestSur
     char resrefStr[9];
     memcpy(resrefStr, pThis->m_cResRef.m_resRef.data, 8);
     resrefStr[8] = '\0';
-    
+
     const int additionalX = (*p_ResolutionX - 640) / 2;
     const int additionalY = (*p_ResolutionY - 480) / 2;
 
@@ -1666,7 +1666,7 @@ byte CVidMode0::Export_Override_ConvertSurfaceToBmp(
     {
         convertSurfaceToBmpHandleLine(state, 2);
     }
-        
+
     this->UnlockTexSurface(nSurface, surfaceDesc.lpSurface);
     return 1;
 }

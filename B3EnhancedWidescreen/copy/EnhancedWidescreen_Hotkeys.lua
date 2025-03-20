@@ -22,20 +22,36 @@ EnhancedWidescreen_Hotkeys_CustomBinding = {
 	SCROLL_TOP_RIGHT_ALT    = 16,
 }
 
-EnhancedWidescreen_Hotkeys_KeyToCustomMapIndex = {
-	[0x25] = EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_LEFT,             -- VK_LEFT
-	[0x26] = EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_UP,               -- VK_UP
-	[0x27] = EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_RIGHT,            -- VK_RIGHT
-	[0x28] = EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_DOWN,             -- VK_DOWN
-	[0x61] = EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_BOTTOM_LEFT_ALT,  -- VK_NUMPAD1
-	[0x62] = EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_DOWN_ALT,         -- VK_NUMPAD2
-	[0x63] = EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_BOTTOM_RIGHT_ALT, -- VK_NUMPAD3
-	[0x64] = EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_LEFT_ALT,         -- VK_NUMPAD4
-	[0x66] = EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_RIGHT_ALT,        -- VK_NUMPAD6
-	[0x67] = EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_TOP_LEFT_ALT,     -- VK_NUMPAD7
-	[0x68] = EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_UP_ALT,           -- VK_NUMPAD8
-	[0x69] = EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_TOP_RIGHT_ALT,    -- VK_NUMPAD9
+EnhancedWidescreen_Hotkeys_CustomBindings = {
+	[EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_UP]               = { ["iniKey"] = "Scroll Up",                 ["default"] = "Up"       },
+	[EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_UP_ALT]           = { ["iniKey"] = "Scroll Up (Alt)",           ["default"] = "Keypad 8" },
+	[EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_LEFT]             = { ["iniKey"] = "Scroll Left",               ["default"] = "Left"     },
+	[EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_LEFT_ALT]         = { ["iniKey"] = "Scroll Left (Alt)",         ["default"] = "Keypad 4" },
+	[EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_DOWN]             = { ["iniKey"] = "Scroll Down",               ["default"] = "Down"     },
+	[EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_DOWN_ALT]         = { ["iniKey"] = "Scroll Down (Alt)",         ["default"] = "Keypad 2" },
+	[EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_RIGHT]            = { ["iniKey"] = "Scroll Right",              ["default"] = "Right"    },
+	[EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_RIGHT_ALT]        = { ["iniKey"] = "Scroll Right (Alt)",        ["default"] = "Keypad 6" },
+	[EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_TOP_LEFT]         = { ["iniKey"] = "Scroll Top Left",           ["default"] = nil        },
+	[EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_TOP_LEFT_ALT]     = { ["iniKey"] = "Scroll Top Left (Alt)",     ["default"] = "Keypad 7" },
+	[EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_BOTTOM_LEFT]      = { ["iniKey"] = "Scroll Bottom Left",        ["default"] = nil        },
+	[EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_BOTTOM_LEFT_ALT]  = { ["iniKey"] = "Scroll Bottom Left (Alt)",  ["default"] = "Keypad 1" },
+	[EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_BOTTOM_RIGHT]     = { ["iniKey"] = "Scroll Bottom Right",       ["default"] = nil        },
+	[EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_BOTTOM_RIGHT_ALT] = { ["iniKey"] = "Scroll Bottom Right (Alt)", ["default"] = "Keypad 3" },
+	[EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_TOP_RIGHT]        = { ["iniKey"] = "Scroll Top Right",          ["default"] = nil        },
+	[EnhancedWidescreen_Hotkeys_CustomBinding.SCROLL_TOP_RIGHT_ALT]    = { ["iniKey"] = "Scroll Top Right (Alt)",    ["default"] = "Keypad 9" },
 }
+
+EnhancedWidescreen_Hotkeys_KeyToCustomMapIndex = {}
+
+for customBinding, entry in pairs(EnhancedWidescreen_Hotkeys_CustomBindings) do
+
+	local keyStrRepresentation = EnhancedWidescreen.GetINIString("Keymap.ini", "Keymap", entry.iniKey, entry.default or "")
+	local virtualKey = EnhancedWidescreen.StringToVirtualKey(keyStrRepresentation)
+
+	if virtualKey ~= 0 then
+		EnhancedWidescreen_Hotkeys_KeyToCustomMapIndex[virtualKey] = customBinding
+	end
+end
 
 function EnhancedWidescreen_Hotkeys_GetBoundCustomMapIndex(key)
 	-- CTRL

@@ -15,3 +15,25 @@ REQUIRE_PREDICATE GAME_IS ~totsc~ ~Game not supported.~
 
 	// Install Lua files
 	COPY ~B3EnhancedWidescreen/copy~ ~override~
+
+	// Patch Keymap.ini to add softcoded scrolling hotkeys
+	COPY ~Keymap.ini~ ~.~
+
+		REPLACE_TEXTUALLY ~Location =.*%WNL%~ ~~~~~\0
+Scroll Up = Up
+Scroll Up (Alt) = Keypad 8
+Scroll Left = Left
+Scroll Left (Alt) = Keypad 4
+Scroll Down = Down
+Scroll Down (Alt) = Keypad 2
+Scroll Right = Right
+Scroll Right (Alt) = Keypad 6
+Scroll Top Left =
+Scroll Top Left (Alt) = Keypad 7
+Scroll Bottom Left =
+Scroll Bottom Left (Alt) = Keypad 1
+Scroll Bottom Right =
+Scroll Bottom Right (Alt) = Keypad 3
+Scroll Top Right =
+Scroll Top Right (Alt) = Keypad 9
+~~~~~

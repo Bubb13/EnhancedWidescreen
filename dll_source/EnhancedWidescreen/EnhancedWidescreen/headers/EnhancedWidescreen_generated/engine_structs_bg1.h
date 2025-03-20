@@ -2662,14 +2662,6 @@ struct CNetwork
 	CNetwork() = delete;
 };
 
-namespace EnhancedWidescreen
-{
-	extern int allowedOutOfBoundsLeft;
-	extern int allowedOutOfBoundsTop;
-	extern int allowedOutOfBoundsRight;
-	extern int allowedOutOfBoundsBottom;
-};
-
 struct CVidPoly
 {
 	int _0x0;
@@ -4125,6 +4117,17 @@ struct Pointer
 	{
 		*reference = val;
 	}
+};
+
+namespace EnhancedWidescreen
+{
+	extern int allowedOutOfBoundsLeft;
+	extern int allowedOutOfBoundsTop;
+	extern int allowedOutOfBoundsRight;
+	extern int allowedOutOfBoundsBottom;
+
+	void GetINIString(lua_State* L, const char* iniPath, const char* section, const char* key, const char* def);
+	byte StringToVirtualKey(const char* sAscii);
 };
 
 struct ConstCharString

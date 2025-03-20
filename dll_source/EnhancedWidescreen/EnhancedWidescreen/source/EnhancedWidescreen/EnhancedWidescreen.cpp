@@ -5,10 +5,112 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb/stb_image_write.h"
 
+#include "InfinityLoader/infinity_loader_common_api.h"
 #include "engine_structs_bg1.h"
 #include "thread_watcher.h"
 
 #include <filesystem>
+
+//////////////////////////////////
+// EnhancedWidescreen Namespace //
+//////////////////////////////////
+
+void EnhancedWidescreen::GetINIString(
+    lua_State *const L,
+    const char *const iniPath,
+    const char *const section,
+    const char *const key,
+    const char *const def
+)
+{
+    String result{};
+
+    const DWORD lastError = GetINIStrDef(
+        sharedState().WorkingFolder() + NulTermStrToStr(iniPath),
+        NulTermStrToStr(section).c_str(),
+        NulTermStrToStr(key).c_str(),
+        NulTermStrToStr(def).c_str(),
+        result
+    );
+
+    if (lastError != ERROR_SUCCESS)
+    {
+        FPrint("[EnhancedWidescreen.dll] EnhancedWidescreen::GetINIStr() - GetINIStrDef() failed (%d)", lastError);
+        lua_pushstring(L, def);
+        return;
+    }
+
+    lua_pushstring(L, StrToStrA(result).c_str());
+}
+
+static std::pair<const byte, const char *const> aSpecialVirtualKeyMappings[] = {
+	{ VK_OEM_1,      ";"        },
+	{ VK_OEM_PLUS,   "="        },
+	{ VK_OEM_COMMA,  ","        },
+	{ VK_OEM_MINUS,  "-"        },
+	{ VK_OEM_PERIOD, "."        },
+	{ VK_OEM_2,      "/"        },
+	{ VK_OEM_3,      "`"        },
+	{ VK_OEM_4,      "["        },
+	{ VK_OEM_5,      "\\"       },
+	{ VK_OEM_6,      "]"        },
+	{ VK_OEM_7,      "'"        },
+	{ VK_UP,         "Up"       },
+	{ VK_LEFT,       "Left"     },
+	{ VK_DOWN,       "Down"     },
+	{ VK_RIGHT,      "Right"    },
+	{ VK_NUMPAD0,    "Keypad 0" },
+	{ VK_NUMPAD1,    "Keypad 1" },
+	{ VK_NUMPAD2,    "Keypad 2" },
+	{ VK_NUMPAD3,    "Keypad 3" },
+	{ VK_NUMPAD4,    "Keypad 4" },
+	{ VK_NUMPAD5,    "Keypad 5" },
+	{ VK_NUMPAD6,    "Keypad 6" },
+	{ VK_NUMPAD7,    "Keypad 7" },
+	{ VK_NUMPAD8,    "Keypad 8" },
+	{ VK_NUMPAD9,    "Keypad 9" },
+};
+
+byte EnhancedWidescreen::StringToVirtualKey(const char *const sAscii)
+{
+	const char nFirstChar = sAscii[0];
+
+	if (nFirstChar == '\0')
+	{
+		return 0;
+	}
+
+	if (sAscii[1] == '\0')
+	{
+		// [Ascii a-z]
+		if (nFirstChar >= 97 && nFirstChar <= 122)
+		{
+			return nFirstChar - 32;
+		}
+
+		// [Ascii A-Z]
+		if (nFirstChar >= 65 && nFirstChar <= 90)
+		{
+			return nFirstChar;
+		}
+
+		// [Ascii 0-9]
+		if (nFirstChar >= 48 && nFirstChar <= 57)
+		{
+			return nFirstChar;
+		}
+	}
+
+	for (const auto& mapping : aSpecialVirtualKeyMappings)
+	{
+		if (strcmp(mapping.second, sAscii) == 0)
+		{
+			return mapping.first;
+		}
+	}
+
+	return 0;
+}
 
 /////////////////
 // Lua Utility //

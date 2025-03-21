@@ -207,6 +207,39 @@ Value=9088388
 ;-- Engine Functions --
 ;----------------------
 
+[Unknown_007c9cc0]
+Value=8166592
+
+[Unknown_007d7ef0]
+Value=8224496
+
+[Unknown_007d7f50]
+Value=8224592
+
+[Unknown_007d7f70]
+Value=8224624
+
+[Unknown_008a4834]
+Value=9062452
+
+[Unknown_008a4838]
+Value=9062456
+
+[audio]
+Value=9110788
+
+[audioOpenPtr]
+Value=9062444
+
+[numAudio]
+Value=9110792
+
+[queryCompressedFunc]
+Value=9062464
+
+[realloc]
+Value=8328688
+
 ;---------------------
 ;-- Engine VFTables --
 ;---------------------

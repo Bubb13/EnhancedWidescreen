@@ -2960,6 +2960,22 @@ struct CVisibilityMap
 	CVisibilityMap() = delete;
 };
 
+struct tag_soundstruct
+{
+	undefined4 _0x0;
+	undefined4 _0x4;
+	undefined4 _0x8;
+	undefined4 _0xC;
+	undefined4 _0x10;
+	undefined4 _0x14;
+	undefined4 _0x18;
+	undefined4 _0x1C;
+	undefined4 _0x20;
+	undefined4 _0x24;
+
+	tag_soundstruct() = delete;
+};
+
 struct CVideoFunctions
 {
 	byte _0x0;
@@ -4190,6 +4206,21 @@ extern type_AssertionFailed p_AssertionFailed;
 typedef int (*type_GetDeviceBitDepth)();
 extern type_GetDeviceBitDepth p_GetDeviceBitDepth;
 
+typedef void* (__cdecl *type_realloc)(void* arg0, size_t arg1);
+extern type_realloc p_realloc;
+
+typedef undefined4 (__cdecl *type_Unknown_007c9cc0)(void* arg0, undefined4 arg1, undefined4* arg2, undefined4* arg3, undefined4* arg4);
+extern type_Unknown_007c9cc0 p_Unknown_007c9cc0;
+
+typedef size_t (__cdecl *type_Unknown_007d7ef0)(undefined4 arg0);
+extern type_Unknown_007d7ef0 p_Unknown_007d7ef0;
+
+typedef undefined4 (__cdecl *type_Unknown_007d7f50)(undefined4 arg0, undefined4 arg1, undefined4 arg2);
+extern type_Unknown_007d7f50 p_Unknown_007d7f50;
+
+typedef undefined4 (__cdecl *type_Unknown_007d7f70)(undefined4 arg0);
+extern type_Unknown_007d7f70 p_Unknown_007d7f70;
+
 extern CBaldurChitin** p_g_pBaldurChitin;
 extern DWORD* p_AsyncThreadLastTickStart;
 extern DWORD* p_AsyncThreadTickDelta;
@@ -4210,6 +4241,12 @@ extern UINT (__stdcall **p_RegisterWindowMessageA)(LPCSTR lpString);
 extern BOOL (__stdcall **p_SetThreadPriority)(HANDLE hThread, int nPriority);
 extern DWORD (__stdcall **p_SuspendThread)(HANDLE hThread);
 extern BOOL (__stdcall **p_TranslateMessage)(const MSG* lpMsg);
+extern undefined4 (__cdecl **p_queryCompressedFunc)(char* arg0);
+extern undefined4 (__cdecl **p_audioOpenPtr)(const char* filename, const char* mode);
+extern undefined4 (__cdecl **p_Unknown_008a4834)(undefined4 arg0, undefined4 arg1, undefined4 arg2, undefined4 arg3);
+extern undefined4 (__cdecl **p_Unknown_008a4838)(undefined4 arg0, undefined4 arg1, undefined4 arg2);
+extern tag_soundstruct** p_audio;
+extern int* p_numAudio;
 
 struct CharString
 {
@@ -57961,7 +57998,7 @@ struct CChitin
 		void (__thiscall *_0x84)(CChitin*);
 		void (__thiscall *_0x88)(CChitin*);
 		void (__thiscall *_0x8C)(CChitin*);
-		void (__thiscall *_0x90)(CChitin*);
+		void (__thiscall *GetMaxChannels)(CChitin*);
 		void (__thiscall *_0x94)(CChitin*);
 		void (__thiscall *_0x98)(CChitin*);
 		void (__thiscall *_0x9C)(CChitin*);
@@ -63202,7 +63239,7 @@ struct CChitin
 	{
 	}
 
-	virtual void virtual__0x90()
+	virtual void virtual_GetMaxChannels()
 	{
 	}
 

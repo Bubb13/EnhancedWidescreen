@@ -1586,6 +1586,117 @@ int _stdcall Export_CCacheStatusShimFontRender(
         rClip, dwFlags, nUnused, nDemanded);
 }
 
+int __cdecl Export_Override_audioOpen(const char* sPath, uint nFlags)
+{
+    char sPathCopy[MAX_PATH]; // Bugfix: Increased from 80
+    strcpy(sPathCopy, sPath);
+
+    undefined4 queryCompressedFuncResult = (*p_queryCompressedFunc)(sPathCopy);
+
+    char sUnknown[3];
+    int nNumUnknownChars;
+
+    if ((nFlags & 1) == 0)
+    {
+        if ((nFlags & 2) != 0)
+        {
+            sUnknown[0] = 'w';
+            sUnknown[1] = '+';
+            nNumUnknownChars = 2;
+        }
+        else
+        {
+            sUnknown[0] = 'r';
+            nNumUnknownChars = 1;
+        }
+    }
+    else
+    {
+        sUnknown[0] = 'w';
+        nNumUnknownChars = 1;
+    }
+
+    if ((nFlags & 0x4000) == 0)
+    {
+        if ((nFlags & 0x8000) != 0)
+        {
+            sUnknown[nNumUnknownChars] = 'b';
+        }
+    }
+    else
+    {
+        sUnknown[nNumUnknownChars] = 't';
+    }
+
+    const undefined4 audioOpenPtrResult = (*p_audioOpenPtr)(sPathCopy, sUnknown);
+
+    if (audioOpenPtrResult == 0)
+    {
+        return -1;
+    }
+
+    int nOpenAudioIndex = 0;
+
+    for (; nOpenAudioIndex < *p_numAudio; ++nOpenAudioIndex)
+    {
+        if (((*p_audio)[nOpenAudioIndex]._0x0 & 1) == 0)
+        {
+            break;
+        }
+    }
+
+    if (nOpenAudioIndex == *p_numAudio)
+    {
+        if (*p_audio == nullptr)
+        {
+            *p_audio = reinterpret_cast<tag_soundstruct*>(p_malloc(0x28));
+        }
+        else
+        {
+            *p_audio = reinterpret_cast<tag_soundstruct*>(p_realloc(*p_audio, (*p_numAudio + 1) * 0x28));
+        }
+
+        ++(*p_numAudio);
+    }
+
+    tag_soundstruct *const pAudio = &(*p_audio)[nOpenAudioIndex];
+    pAudio->_0x0 = 1;
+    pAudio->_0x4 = audioOpenPtrResult;
+
+    if ((-(queryCompressedFuncResult != 0) & 2U) != 2)
+    {
+        pAudio->_0x18 = p_Unknown_007d7f70(pAudio->_0x4);
+        pAudio->_0x24 = 0;
+
+        return nOpenAudioIndex + 1;
+    }
+
+    if (p_Unknown_007d7ef0(audioOpenPtrResult) == 0x53464144)
+    {
+        const size_t size = p_Unknown_007d7ef0(audioOpenPtrResult);
+        pAudio->_0xC = 0;
+        pAudio->_0x10 = size;
+        pAudio->_0x14 = reinterpret_cast<undefined4>(p_malloc(size));
+
+        (*p_Unknown_008a4834)(pAudio->_0x14, 1, size, audioOpenPtrResult);
+    }
+    else
+    {
+        pAudio->_0xC = 0;
+        pAudio->_0x10 = 0;
+        pAudio->_0x14 = 0;
+
+        (*p_Unknown_008a4838)(audioOpenPtrResult, 0, 0);
+    }
+
+    pAudio->_0x0 |= 2;
+    pAudio->_0x8 = p_Unknown_007c9cc0(p_Unknown_007d7f50, pAudio->_0x4, &pAudio->_0x20, &pAudio->_0x1C, &pAudio->_0x18);
+    pAudio->_0x18 *= 2;
+    pAudio->_0x24 = 0;
+
+    return nOpenAudioIndex + 1;
+}
+
 /////////////////////////////////////////////////////
 // START CVidMode0::ConvertSurfaceToBmp() Override //
 /////////////////////////////////////////////////////

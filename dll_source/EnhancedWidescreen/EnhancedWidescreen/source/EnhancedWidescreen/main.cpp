@@ -46,6 +46,12 @@ static void exportPatterns()
 	exportPattern(TEXT("EnhancedWidescreen_OnUnlockingObject"), Export_OnUnlockingObject);
 
 	/////////
+	// Fix //
+	/////////
+
+	exportPattern(TEXT("EnhancedWidescreen_Override_audioOpen"), Export_Override_audioOpen);
+
+	/////////
 	// GUI //
 	/////////
 

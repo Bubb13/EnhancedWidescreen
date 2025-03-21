@@ -10,7 +10,7 @@ REQUIRE_PREDICATE GAME_IS ~totsc~ ~Game not supported.~
 
 	// Install cnc-ddraw
 	COPY ~B3EnhancedWidescreen/cnc-ddraw~ ~.~
-	AT_NOW ~rmdir "Shaders" /s /q & xcopy "B3EnhancedWidescreen\cnc-ddraw\Shaders" "Shaders" /i /s /e~ EXACT
+	AT_NOW ~( if exist "Shaders" ( rmdir "Shaders" /s /q ) ) & xcopy "B3EnhancedWidescreen\cnc-ddraw\Shaders" "Shaders" /i /s /e~ EXACT
 	AT_UNINSTALL ~rmdir "Shaders" /s /q~ EXACT
 
 	// Install Lua files

@@ -180,6 +180,27 @@ void registerBaseclasses() {
 		{"CUIControlButton", {
 			{"CUIControlBase", offsetofbase<CUIControlButton, CUIControlBase>()},
 		}},
+		{"CUIControlButton::vtbl", {
+			{"CUIControlBase::vtbl", offsetofbase<CUIControlButton::vtbl, CUIControlBase::vtbl>()},
+		}},
+		{"CUIControlButtonToggle", {
+			{"CUIControlButton", offsetofbase<CUIControlButtonToggle, CUIControlButton>()},
+		}},
+		{"CUIControlButtonToggle::vtbl", {
+			{"CUIControlButton::vtbl", offsetofbase<CUIControlButtonToggle::vtbl, CUIControlButton::vtbl>()},
+		}},
+		{"CUIControlButtonOptionsScreenCheckbox", {
+			{"CUIControlButtonToggle", offsetofbase<CUIControlButtonOptionsScreenCheckbox, CUIControlButtonToggle>()},
+		}},
+		{"CUIControlButtonOptionsScreenCheckbox::vtbl", {
+			{"CUIControlButtonToggle::vtbl", offsetofbase<CUIControlButtonOptionsScreenCheckbox::vtbl, CUIControlButtonToggle::vtbl>()},
+		}},
+		{"CUIControlButtonOptionsScreenDone", {
+			{"CUIControlButton", offsetofbase<CUIControlButtonOptionsScreenDone, CUIControlButton>()},
+		}},
+		{"CUIControlButtonOptionsScreenDone::vtbl", {
+			{"CUIControlButton::vtbl", offsetofbase<CUIControlButtonOptionsScreenDone::vtbl, CUIControlButton::vtbl>()},
+		}},
 		{"CGameEffectFile", {
 			{"CResHelper<CResEffect,1016>", offsetofbase<CGameEffectFile, CResHelper<CResEffect,1016>>()},
 		}},
@@ -229,17 +250,17 @@ void registerBaseclasses() {
 		{"CScreenMap::vtbl", {
 			{"CBaldurEngine::vtbl", offsetofbase<CScreenMap::vtbl, CBaldurEngine::vtbl>()},
 		}},
+		{"CScreenOptions", {
+			{"CBaldurEngine", offsetofbase<CScreenOptions, CBaldurEngine>()},
+		}},
+		{"CScreenOptions::vtbl", {
+			{"CBaldurEngine::vtbl", offsetofbase<CScreenOptions::vtbl, CBaldurEngine::vtbl>()},
+		}},
 		{"CScreenWorldMap", {
 			{"CBaldurEngine", offsetofbase<CScreenWorldMap, CBaldurEngine>()},
 		}},
 		{"CScreenWorldMap::vtbl", {
 			{"CBaldurEngine::vtbl", offsetofbase<CScreenWorldMap::vtbl, CBaldurEngine::vtbl>()},
-		}},
-		{"CUnknownEngine11", {
-			{"CBaldurEngine", offsetofbase<CUnknownEngine11, CBaldurEngine>()},
-		}},
-		{"CUnknownEngine11::vtbl", {
-			{"CBaldurEngine::vtbl", offsetofbase<CUnknownEngine11::vtbl, CBaldurEngine::vtbl>()},
 		}},
 		{"CUnknownEngine12", {
 			{"CBaldurEngine", offsetofbase<CUnknownEngine12, CBaldurEngine>()},

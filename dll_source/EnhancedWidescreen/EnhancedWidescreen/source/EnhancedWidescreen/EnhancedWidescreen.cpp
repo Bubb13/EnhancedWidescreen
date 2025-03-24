@@ -11,6 +11,19 @@
 
 #include <filesystem>
 
+///////////////
+// cnc-ddraw //
+///////////////
+
+constexpr UINT WM_TOGGLE_FULLSCREEN = WM_APP + 117;
+constexpr WPARAM CNC_DDRAW_SET_FULLSCREEN = 1;
+constexpr WPARAM CNC_DDRAW_SET_WINDOWED = 2;
+
+bool cncDDrawPresent;
+
+typedef BOOL (*type_DDIsWindowed)();
+type_DDIsWindowed DDIsWindowed;
+
 //////////////////////////////////
 // EnhancedWidescreen Namespace //
 //////////////////////////////////
@@ -1697,6 +1710,52 @@ int __cdecl Export_Override_audioOpen(const char* sPath, uint nFlags)
     return nOpenAudioIndex + 1;
 }
 
+bool __stdcall Export_CheckForceFullscreen()
+{
+    return cncDDrawPresent;
+}
+
+void __stdcall Export_CheckToggleFullscreen()
+{
+    CBaldurChitin *const pChitin = *p_g_pBaldurChitin;
+    CScreenOptions *const pOptions = pChitin->m_pEngineOptions;
+    CUIManager *const pUIManager = &pOptions->m_uiManager;
+    CUIPanel *const pPanel = pUIManager->GetPanel(6);
+    CUIControlButtonToggle *const pToggle = reinterpret_cast<CUIControlButtonToggle*>(pPanel->GetControl(9));
+
+    const bool realFullscreenState = !cncDDrawPresent ? pChitin->m_bFullScreen : DDIsWindowed() == 0;
+
+    if ((pToggle->m_nToggle != 0) != realFullscreenState)
+    {
+        pChitin->m_bPendingFullScreen = pChitin->m_bFullScreen ? 0 : 1;
+    }
+}
+
+void __stdcall Export_IsActuallyFullscreen(byte* pFullscreen)
+{
+    if (!cncDDrawPresent)
+    {
+        return;
+    }
+
+    *pFullscreen = !DDIsWindowed();
+}
+
+byte CChitin::Export_Override_ToggleFullscreen(byte bWriteINI)
+{
+    if (!cncDDrawPresent)
+    {
+        return this->Original_ToggleFullscreen(bWriteINI);
+    }
+
+    // cnc-ddraw always operates the engine under "fullscreen" mode
+    this->m_bPendingFullScreen = 1;
+
+    const WPARAM wParam = DDIsWindowed() ? CNC_DDRAW_SET_FULLSCREEN : CNC_DDRAW_SET_WINDOWED;
+    PostMessage(this->m_hWindow, WM_TOGGLE_FULLSCREEN, wParam, NULL);
+    return 1;
+}
+
 /////////////////////////////////////////////////////
 // START CVidMode0::ConvertSurfaceToBmp() Override //
 /////////////////////////////////////////////////////
@@ -1916,8 +1975,35 @@ int __stdcall Export_Modulo(int a, int b)
 // Enhanced Widescreen Initialization //
 ////////////////////////////////////////
 
+template<typename POINTER_TYPE>
+static void fillModulePointer(const HMODULE module, const char *const procName, POINTER_TYPE& pointer)
+{
+    pointer = reinterpret_cast<POINTER_TYPE>(GetProcAddress(module, procName));
+
+    if (pointer == NULL)
+    {
+        FPrint("[!][EnhancedWidescreen.dll] fillModulePointer() - GetProcAddress() failed (%d) to get \"%s\"\n", GetLastError(), procName);
+    }
+}
+
 void InitEnhancedWidescreen()
 {
+    const HMODULE hDDraw = LoadLibrary(TEXT("ddraw.dll"));
+
+    if (hDDraw != NULL)
+    {
+        cncDDrawPresent = GetProcAddress(hDDraw, "GameHandlesClose") != NULL;
+
+        if (cncDDrawPresent)
+        {
+            fillModulePointer(hDDraw, "DDIsWindowed", DDIsWindowed);
+        }
+    }
+    else
+    {
+        FPrint("[!][EnhancedWidescreen.dll] InitEnhancedWidescreen() - LoadLibrary() failed (%d)\n", GetLastError());
+    }
+
     EnhancedWidescreen::allowedOutOfBoundsLeft = 0;
     EnhancedWidescreen::allowedOutOfBoundsTop = 0;
     EnhancedWidescreen::allowedOutOfBoundsRight = 0;

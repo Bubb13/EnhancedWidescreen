@@ -12,6 +12,7 @@
 
 		IEex_InSyncState = true
 
+		IEex_DoFile("EnhancedWidescreen_EarlyShims_Patch")
 		IEex_DoFile("EnhancedWidescreen_Main")
 		IEex_DoFile("EnhancedWidescreen_Main_Patch")
 

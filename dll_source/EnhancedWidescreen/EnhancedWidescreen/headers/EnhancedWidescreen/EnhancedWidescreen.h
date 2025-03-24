@@ -28,3 +28,7 @@ int _stdcall Export_CCacheStatusShimMosaicRender(CVidMosaic* pThis, int nDestSur
 int _stdcall Export_CCacheStatusShimFontRender(CVidFont* pThis, CString* pStr, void* pRawSurface, uint lPitch, int x, int y, CRect* rClip, uint dwFlags, int nUnused, int nDemanded);
 
 int __cdecl Export_Override_audioOpen(const char* sPath, uint nFlags);
+
+bool __stdcall Export_CheckForceFullscreen();
+void __stdcall Export_CheckToggleFullscreen();
+void __stdcall Export_IsActuallyFullscreen(byte* pFullscreen);

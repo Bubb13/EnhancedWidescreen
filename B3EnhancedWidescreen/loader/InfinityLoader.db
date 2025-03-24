@@ -102,6 +102,9 @@ Value=5111936
 [CUIPanel::Construct]
 Value=5101360
 
+[CUIPanel::GetControl]
+Value=5102868
+
 [CUIPanel::InvalidateRect]
 Value=5107579
 

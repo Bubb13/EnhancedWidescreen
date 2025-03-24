@@ -550,6 +550,38 @@ IEex_DisableCodeProtection()
 		jmp #L(EnhancedWidescreen_Override_CVidMode0::ConvertSurfaceToBmp)
 	]]})
 
+	---------------------------------------------------------
+	-- Correctly handle toggling fullscreen with cnc-ddraw --
+	---------------------------------------------------------
+
+	-- CBaldurChitin::Construct()
+	IEex_HookAfterRestore(0x42C03D, 0, 6, 6, {[[
+		test al, al
+		jnz #L(return)
+		call #L(EnhancedWidescreen_CheckForceFullscreen)
+	]]})
+
+	-- CScreenOptions::OnGraphicsPanelDoneButtonClick()
+	IEex_JITAt(0x6341AC, {[[
+		call #L(EnhancedWidescreen_CheckToggleFullscreen)
+		jmp 0x634209
+		#REPEAT(83,nop #ENDL)
+	]]})
+
+	-- CScreenOptions::UpdatePanel6()
+	IEex_HookBeforeCall(0x634A78, {[[
+		push ecx
+		lea eax, dword ptr ss:[esp+0x4]
+		push eax
+		call #L(EnhancedWidescreen_IsActuallyFullscreen)
+		pop ecx
+	]]})
+
+	-- CChitin::ToggleFullscreen()
+	IEex_JITAt(0x79390D, {[[
+		jmp #L(EnhancedWidescreen_Override_CChitin::ToggleFullscreen)
+	]]})
+
 --//////////////
 --// Viewport //
 --//////////////

@@ -90,6 +90,11 @@ static void exportPatterns()
 
 	exportPattern(TEXT("EnhancedWidescreen_Override_CVidMode0::ConvertSurfaceToBmp"), getMemberPtr(&CVidMode0::Export_Override_ConvertSurfaceToBmp));
 
+	exportPattern(TEXT("EnhancedWidescreen_CheckForceFullscreen"), Export_CheckForceFullscreen);
+	exportPattern(TEXT("EnhancedWidescreen_CheckToggleFullscreen"), Export_CheckToggleFullscreen);
+	exportPattern(TEXT("EnhancedWidescreen_IsActuallyFullscreen"), Export_IsActuallyFullscreen);
+	exportPattern(TEXT("EnhancedWidescreen_Override_CChitin::ToggleFullscreen"), getMemberPtr(&CChitin::Export_Override_ToggleFullscreen));
+
 	/////////////////////////
 	// Thread Entry Points //
 	/////////////////////////

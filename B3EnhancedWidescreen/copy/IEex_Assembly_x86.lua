@@ -284,16 +284,18 @@ function IEex_HookRelativeBranch(address, assemblyT)
 end
 
 function IEex_HookReplaceFunctionMaintainOriginal(address, restoreSize, originalLabel, assembly)
-
-	IEex_DefineAssemblyLabel(originalLabel, IEex_JITNear(IEex_FlattenTable({
-		IEex_StoreBytesAssembly(address, restoreSize),
-		{"jmp ", address + restoreSize, "#ENDL"}
-	})))
-
+	IEex_HookShimMaintainOriginal(address, restoreSize, originalLabel)
 	IEex_JITAt(address, {[[
 		jmp ]], IEex_JITNear(assembly), [[ #ENDL
 		#REPEAT(#$(1),nop #ENDL) ]], {restoreSize - 5}, [[ #ENDL
 	]]})
+end
+
+function IEex_HookShimMaintainOriginal(address, restoreSize, originalLabel)
+	IEex_DefineAssemblyLabel(originalLabel, IEex_JITNear(IEex_FlattenTable({
+		IEex_StoreBytesAssembly(address, restoreSize),
+		{"jmp ", address + restoreSize, "#ENDL"}
+	})))
 end
 
 ---------------------

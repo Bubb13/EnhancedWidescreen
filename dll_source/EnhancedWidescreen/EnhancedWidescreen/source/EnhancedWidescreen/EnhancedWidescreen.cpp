@@ -1756,6 +1756,49 @@ byte CChitin::Export_Override_ToggleFullscreen(byte bWriteINI)
     return 1;
 }
 
+UINT CChitin::Export_Override_GetBitsPerPixel()
+{
+    if (!cncDDrawPresent)
+    {
+        return (*p_GetPrivateProfileIntA)("Program Options", "BitsPerPixel", 16, this->virtual_GetIniName());
+    }
+
+    return 32;
+}
+
+int __stdcall Export_Override_EnumDisplayModesCallback(DDSURFACEDESC* pDesc, CVideo* pVideo)
+{
+    if (pDesc->dwWidth != *p_ResolutionX || pDesc->dwHeight != *p_ResolutionY)
+    {
+        return 1;
+    }
+
+    if (!cncDDrawPresent)
+    {
+        switch (pDesc->ddpfPixelFormat.dwRGBBitCount)
+        {
+            case 16:
+                pVideo->m_bHasBitDepth16 = 1;
+                break;
+            case 24:
+                pVideo->m_bHasBitDepth24 = 1;
+                break;
+            case 32:
+                pVideo->m_bHasBitDepth32 = 1;
+                break;
+        }
+
+        return 1;
+    }
+
+    if (pDesc->ddpfPixelFormat.dwRGBBitCount == 32)
+    {
+        pVideo->m_bHasBitDepth32 = 1;
+    }
+
+    return 1;
+}
+
 /////////////////////////////////////////////////////
 // START CVidMode0::ConvertSurfaceToBmp() Override //
 /////////////////////////////////////////////////////
@@ -1892,6 +1935,8 @@ byte CVidMode0::Export_Override_ConvertSurfaceToBmp(
 
     if ((*p_g_pBaldurChitin)->m_cVideo.m_nBitDepth != 32)
     {
+        // Only occurs if the user uninstalled cnc-ddraw
+        Print("[!][EnhancedWidescreen.dll] CVidMode0::Export_Override_ConvertSurfaceToBmp() - Unhandled bit depth\n");
         this->UnlockTexSurface(nSurface, surfaceDesc.lpSurface);
         p_free(*ppOut);
         return 0;

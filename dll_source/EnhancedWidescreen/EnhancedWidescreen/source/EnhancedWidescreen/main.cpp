@@ -95,6 +95,9 @@ static void exportPatterns()
 	exportPattern(TEXT("EnhancedWidescreen_IsActuallyFullscreen"), Export_IsActuallyFullscreen);
 	exportPattern(TEXT("EnhancedWidescreen_Override_CChitin::ToggleFullscreen"), getMemberPtr(&CChitin::Export_Override_ToggleFullscreen));
 
+	exportPattern(TEXT("EnhancedWidescreen_Override_CChitin::GetBitsPerPixel"), getMemberPtr(&CChitin::Export_Override_GetBitsPerPixel));
+	exportPattern(TEXT("EnhancedWidescreen_Override_EnumDisplayModesCallback"), Export_Override_EnumDisplayModesCallback);
+
 	/////////////////////////
 	// Thread Entry Points //
 	/////////////////////////

@@ -20551,11 +20551,10 @@ struct Array
 struct CVideo
 {
 	short m_nBitDepth;
-	undefined _0x2;
-	undefined _0x3;
-	undefined1 m_nDisplayRate16;
-	undefined1 m_nDisplayRate24;
-	undefined1 m_nDisplayRate32;
+	ushort m_nPendingBitDepth;
+	byte m_bHasBitDepth16;
+	byte m_bHasBitDepth24;
+	byte m_bHasBitDepth32;
 	undefined _0x7;
 	CVideoFunctions m_functions;
 	undefined _0x108;
@@ -20571,10 +20570,7 @@ struct CVideo
 	undefined _0x112;
 	undefined _0x113;
 	IDirectDraw* m_pDirectDraw;
-	undefined _0x118;
-	undefined _0x119;
-	undefined _0x11A;
-	undefined _0x11B;
+	IDirectDrawClipper* m_pDirectDrawClipper;
 	Array<CVidMode*,4> m_aVidModes;
 	CVidMode* m_pActiveVidMode;
 	undefined _0x130;
@@ -58011,8 +58007,8 @@ struct CChitin
 		void (__thiscall *_0x7C)(CChitin*);
 		void (__thiscall *_0x80)(CChitin*);
 		void (__thiscall *_0x84)(CChitin*);
-		void (__thiscall *_0x88)(CChitin*);
-		void (__thiscall *_0x8C)(CChitin*);
+		void (__thiscall *WriteBitsPerPixel)(CChitin*);
+		void (__thiscall *GetBitsPerPixel)(CChitin*);
 		void (__thiscall *GetMaxChannels)(CChitin*);
 		void (__thiscall *_0x94)(CChitin*);
 		void (__thiscall *_0x98)(CChitin*);
@@ -63087,6 +63083,7 @@ struct CChitin
 	typedef int (__thiscall *type_SetupThreads)(CChitin* pThis);
 	static type_SetupThreads p_SetupThreads;
 
+	UINT Export_Override_GetBitsPerPixel();
 	byte Export_Override_ToggleFullscreen(byte bWriteINI);
 	WPARAM Export_Update(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd);
 
@@ -63255,11 +63252,11 @@ struct CChitin
 	{
 	}
 
-	virtual void virtual__0x88()
+	virtual void virtual_WriteBitsPerPixel()
 	{
 	}
 
-	virtual void virtual__0x8C()
+	virtual void virtual_GetBitsPerPixel()
 	{
 	}
 

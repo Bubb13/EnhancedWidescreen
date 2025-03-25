@@ -582,6 +582,20 @@ IEex_DisableCodeProtection()
 		jmp #L(EnhancedWidescreen_Override_CChitin::ToggleFullscreen)
 	]]})
 
+	---------------------------
+	-- Force bit depth of 32 --
+	---------------------------
+
+	-- CChitin::GetBitsPerPixel()
+	IEex_JITAt(0x795280, {[[
+		jmp #L(EnhancedWidescreen_Override_CChitin::GetBitsPerPixel)
+	]]})
+
+	-- CVideo::EnumDisplayModesCallback()
+	IEex_JITAt(0x7973A0, {[[
+		jmp #L(EnhancedWidescreen_Override_EnumDisplayModesCallback)
+	]]})
+
 --//////////////
 --// Viewport //
 --//////////////

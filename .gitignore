@@ -1,6 +1,6 @@
 
 .vscode
-
+/*.zip
 /dll_source/LuaJIT-2.1.0-beta3/src/*.*
 
 ## Ignore Visual Studio temporary files, build results, and

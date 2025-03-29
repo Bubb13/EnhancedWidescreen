@@ -6,6 +6,8 @@
 #include "stb/stb_image_write.h"
 
 #include "InfinityLoader/infinity_loader_common_api.h"
+#include "crash_handler.h"
+#include "engine_function_names.h"
 #include "engine_structs_bg1.h"
 #include "thread_watcher.h"
 
@@ -568,7 +570,10 @@ static void onThreadEntry(const char *const threadName)
 
 void __stdcall Export_OnSyncThreadEntry()
 {
+    SetUnhandledExceptionFilter(EnhancedWidescreenUnhandledExceptionFilter);
+    LoadFunctionNames();
     onThreadEntry("Render");
+    p_Original_entry();
 }
 
 void __stdcall Export_OnSearchThreadEntry()

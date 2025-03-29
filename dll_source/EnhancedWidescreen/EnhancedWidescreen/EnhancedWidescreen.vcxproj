@@ -8,6 +8,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\EnhancedWidescreen\common.cpp" />
+    <ClCompile Include="source\EnhancedWidescreen\crash_handler.cpp" />
+    <ClCompile Include="source\EnhancedWidescreen\engine_function_names.cpp" />
     <ClCompile Include="source\EnhancedWidescreen\EnhancedWidescreen.cpp" />
     <ClCompile Include="source\EnhancedWidescreen\EnhancedWidescreen_lua.cpp" />
     <ClCompile Include="source\EnhancedWidescreen\generated\engine_structs_bg1_internal_pointers.cpp" />
@@ -21,6 +23,8 @@
     <ClCompile Include="source\ThreadWatcher\thread_watcher_mapped_memory.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="headers\EnhancedWidescreen\crash_handler.h" />
+    <ClInclude Include="headers\EnhancedWidescreen\engine_function_names.h" />
     <ClInclude Include="headers\EnhancedWidescreen\EnhancedWidescreen.h" />
     <ClInclude Include="headers\EnhancedWidescreen\EnhancedWidescreen_lua.h" />
     <ClInclude Include="headers\EnhancedWidescreen\init_time.h" />

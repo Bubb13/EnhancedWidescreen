@@ -12,6 +12,7 @@ type_Unknown_007c9cc0 p_Unknown_007c9cc0;
 type_Unknown_007d7ef0 p_Unknown_007d7ef0;
 type_Unknown_007d7f50 p_Unknown_007d7f50;
 type_Unknown_007d7f70 p_Unknown_007d7f70;
+type_Original_entry p_Original_entry;
 CBaldurChitin** p_g_pBaldurChitin;
 DWORD* p_AsyncThreadLastTickStart;
 DWORD* p_AsyncThreadTickDelta;
@@ -110,6 +111,7 @@ void InitBindingsInternal() {
 	attemptFillPointer(TEXT("Unknown_007d7ef0"), p_Unknown_007d7ef0);
 	attemptFillPointer(TEXT("Unknown_007d7f50"), p_Unknown_007d7f50);
 	attemptFillPointer(TEXT("Unknown_007d7f70"), p_Unknown_007d7f70);
+	attemptFillPointer(TEXT("Original_entry"), p_Original_entry);
 	attemptFillPointer(TEXT("g_pBaldurChitin"), p_g_pBaldurChitin);
 	attemptFillPointer(TEXT("AsyncThreadLastTickStart"), p_AsyncThreadLastTickStart);
 	attemptFillPointer(TEXT("AsyncThreadTickDelta"), p_AsyncThreadTickDelta);

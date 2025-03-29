@@ -72,6 +72,12 @@
     <ClCompile Include="source\EnhancedWidescreen\EnhancedWidescreen_lua.cpp">
       <Filter>Source Files\EnhancedWidescreen</Filter>
     </ClCompile>
+    <ClCompile Include="source\EnhancedWidescreen\crash_handler.cpp">
+      <Filter>Source Files\EnhancedWidescreen</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EnhancedWidescreen\engine_function_names.cpp">
+      <Filter>Source Files\EnhancedWidescreen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\EnhancedWidescreen\lua_bindings.h">
@@ -96,6 +102,12 @@
       <Filter>Header Files\EnhancedWidescreen</Filter>
     </ClInclude>
     <ClInclude Include="headers\EnhancedWidescreen\EnhancedWidescreen_lua.h">
+      <Filter>Header Files\EnhancedWidescreen</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\EnhancedWidescreen\crash_handler.h">
+      <Filter>Header Files\EnhancedWidescreen</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\EnhancedWidescreen\engine_function_names.h">
       <Filter>Header Files\EnhancedWidescreen</Filter>
     </ClInclude>
   </ItemGroup>

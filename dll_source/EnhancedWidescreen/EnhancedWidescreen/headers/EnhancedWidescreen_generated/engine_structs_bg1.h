@@ -4221,6 +4221,9 @@ extern type_Unknown_007d7f50 p_Unknown_007d7f50;
 typedef undefined4 (__cdecl *type_Unknown_007d7f70)(undefined4 arg0);
 extern type_Unknown_007d7f70 p_Unknown_007d7f70;
 
+typedef void (*type_Original_entry)();
+extern type_Original_entry p_Original_entry;
+
 extern CBaldurChitin** p_g_pBaldurChitin;
 extern DWORD* p_AsyncThreadLastTickStart;
 extern DWORD* p_AsyncThreadTickDelta;

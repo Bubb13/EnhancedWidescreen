@@ -1,6 +1,6 @@
 BACKUP ~weidu_external/B3EnhancedWidescreen/backup~
 AUTHOR ~Bubb~
-VERSION ~v1.0.0~
+VERSION ~v1.0.1~
 
 BEGIN ~Enhanced Widescreen~ LABEL ~B3-EnhancedWidescreen-Main~
 REQUIRE_PREDICATE GAME_IS ~totsc~ ~Game not supported.~

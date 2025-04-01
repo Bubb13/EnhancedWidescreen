@@ -85,7 +85,7 @@ void LoadFunctionNames()
 
 	if (!inputFile)
 	{
-		FPrint("[!][EnhancedWidescreen.dll] loadFunctionNames() - Error opening function_names.db\n");
+		FPrint("[!][EnhancedWidescreen.dll] LoadFunctionNames() - Error opening function_names.db\n");
 		return;
 	}
 

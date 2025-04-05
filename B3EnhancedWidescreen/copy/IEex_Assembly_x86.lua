@@ -292,6 +292,14 @@ function IEex_HookReplaceFunctionMaintainOriginal(address, restoreSize, original
 end
 
 function IEex_HookShimMaintainOriginal(address, restoreSize, originalLabel)
+
+	if IEex_ReadU8(address) == 0xE9 then
+		-- Someone else hooked this function. How rude!
+		local rudeJmpDest = address + 5 + IEex_Read32(address + 1)
+		IEex_DefineAssemblyLabel(originalLabel, rudeJmpDest)
+		return
+	end
+
 	IEex_DefineAssemblyLabel(originalLabel, IEex_JITNear(IEex_FlattenTable({
 		IEex_StoreBytesAssembly(address, restoreSize),
 		{"jmp ", address + restoreSize, "#ENDL"}

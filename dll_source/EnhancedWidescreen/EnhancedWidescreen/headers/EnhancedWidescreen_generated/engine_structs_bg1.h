@@ -4144,6 +4144,7 @@ namespace EnhancedWidescreen
 
 	void GetINIString(lua_State* L, const char* iniPath, const char* section, const char* key, const char* def);
 	byte StringToVirtualKey(const char* sAscii);
+	lua_Integer ElapsedMicroseconds(const char* sTimerName);
 };
 
 struct ConstCharString

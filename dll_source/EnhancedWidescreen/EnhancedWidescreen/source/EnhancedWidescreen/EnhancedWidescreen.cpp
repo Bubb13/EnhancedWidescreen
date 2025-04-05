@@ -9,6 +9,7 @@
 #include "crash_handler.h"
 #include "engine_function_names.h"
 #include "engine_structs_bg1.h"
+#include "init_time.h"
 #include "thread_watcher.h"
 
 #include <filesystem>
@@ -125,6 +126,29 @@ byte EnhancedWidescreen::StringToVirtualKey(const char *const sAscii)
 	}
 
 	return 0;
+}
+
+std::unordered_map<std::string, long long> microsecondTimers{};
+std::mutex microsecondTimersMutex{};
+
+lua_Integer EnhancedWidescreen::ElapsedMicroseconds(const char* sTimerName)
+{
+    const long long currentTime = GetCurrentMicroseconds();
+
+    std::scoped_lock<std::mutex> lk { microsecondTimersMutex };
+
+    if (auto itr = microsecondTimers.find(sTimerName); itr != microsecondTimers.end())
+    {
+        long long& savedTime = itr->second;
+        const lua_Integer toReturn = static_cast<lua_Integer>(currentTime - savedTime);
+        savedTime = currentTime;
+        return toReturn;
+    }
+    else
+    {
+        microsecondTimers[sTimerName] = currentTime;
+        return 0;
+    }
 }
 
 /////////////////
@@ -2038,9 +2062,9 @@ static void fillModulePointer(const HMODULE module, const char *const procName, 
 
 void InitEnhancedWidescreen()
 {
-    const HMODULE hDDraw = LoadLibrary(TEXT("ddraw.dll"));
+    initTime = GetCurrentMicroseconds();
 
-    if (hDDraw != NULL)
+    if (const HMODULE hDDraw = LoadLibrary(TEXT("ddraw.dll")); hDDraw != NULL)
     {
         cncDDrawPresent = GetProcAddress(hDDraw, "GameHandlesClose") != NULL;
 

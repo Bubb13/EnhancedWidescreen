@@ -1,4 +1,51 @@
 
+--------------------------------------
+-- /START/ EnhancedWidescreen_Timer --
+--------------------------------------
+
+EnhancedWidescreen_Timer = {}
+EnhancedWidescreen_Timer.__index = EnhancedWidescreen_Timer
+
+function EnhancedWidescreen_Timer:new(name)
+	local o = {
+		["_name"] = name,
+		["_intervalCallbacks"] = {},
+	}
+	setmetatable(o, self)
+	return o
+end
+
+function EnhancedWidescreen_Timer:tick()
+
+	local elapsedMicroseconds = EnhancedWidescreen.ElapsedMicroseconds(self._name)
+
+	for _, intervalCallbackEntry in ipairs(self._intervalCallbacks) do
+
+		local newIntervalCounter = intervalCallbackEntry.intervalCounter + elapsedMicroseconds
+
+		if newIntervalCounter >= intervalCallbackEntry.interval then
+			intervalCallbackEntry.callback(newIntervalCounter)
+			intervalCallbackEntry.intervalCounter = 0
+		else
+			intervalCallbackEntry.intervalCounter = newIntervalCounter
+		end
+	end
+
+	return elapsedMicroseconds
+end
+
+function EnhancedWidescreen_Timer:onInterval(interval, callback)
+	table.insert(self._intervalCallbacks, {
+		["interval"] = interval,
+		["intervalCounter"] = 0,
+		["callback"] = callback,
+	})
+end
+
+------------------------------------
+-- /END/ EnhancedWidescreen_Timer --
+------------------------------------
+
 -----------------------
 -- General Functions --
 -----------------------
@@ -28,15 +75,14 @@ function EnhancedWidescreen_Scroll_AdjustViewPositionFromScrollState(scrollState
 	end
 end
 
+EnhancedWidescreen_ScrollTimer = EnhancedWidescreen_Timer:new("EnhancedWidescreen_ScrollTimer")
+
 function EnhancedWidescreen_Scroll_CalculateDeltaFactor()
 	local toReturn = 7500
-	local curTick = EngineGlobals.GetTickCount()
-	local lastTick = IEex_TryLabel("lastTick")
-	if lastTick ~= nil then
-		local diff = curTick - lastTick
-		toReturn = diff / 50
+	local microsecondDelta = EnhancedWidescreen_ScrollTimer:tick()
+	if microsecondDelta ~= 0 then
+		toReturn = microsecondDelta / 50000
 	end
-	IEex_DefineAssemblyLabel("lastTick", curTick)
 	return toReturn
 end
 

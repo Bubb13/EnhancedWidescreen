@@ -174,9 +174,10 @@ function EnhancedWidescreen_GUI_Extern_BeforeWorldRender(uiManager)
 	local minBottomPanelY = EnhancedWidescreen_GUI_GetMinBottomPanelY(uiManager)
 	EnhancedWidescreen.allowedOutOfBoundsBottom = EnhancedWidescreen_GUI_ResolutionHeight - minBottomPanelY
 
-	-- Force viewport into bounds if the restrictions changed
+	-- Force viewport into bounds if the restrictions changed.
+	-- Note: bSetExactScale is FALSE so this doesn't reset sub-world-coordinate movement.
 	local infinity = EnhancedWidescreen_Area_GetVisible().m_cInfinity
-	infinity:SetViewPosition(infinity.m_nNewX, infinity.m_nNewY, true)
+	infinity:SetViewPosition(infinity.m_nNewX, infinity.m_nNewY, false)
 end
 
 function EnhancedWidescreen_GUI_Extern_IsUIBlockingAreaViewport(area)

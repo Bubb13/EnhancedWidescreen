@@ -1,7 +1,14 @@
 
+EnhancedWidescreen_Debug_EnableEngineMusicOutput = false
 EnhancedWidescreen_Debug_Locks = false
 
 (function()
+
+	if EnhancedWidescreen_Debug_EnableEngineMusicOutput then
+		IEex_DisableCodeProtection()
+		IEex_WriteU32(0x7BC145, IEex_Label("Hardcoded_logV"))
+		IEex_EnableCodeProtection()
+	end
 
 	if EnhancedWidescreen_Debug_Locks then
 

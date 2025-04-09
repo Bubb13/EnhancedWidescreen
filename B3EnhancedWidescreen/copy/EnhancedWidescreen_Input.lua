@@ -108,17 +108,17 @@ function EnhancedWidescreen_Input_IsWorldScreenAcceptingInput()
 	local uiManager = worldEngine.m_uiManager
 
 	return
-		IEex_IsBitSet(inputMode, 0)               -- (m_pObjectGame->m_gameSave.m_inputMode & 1) != 0
+		IEex_IsBitSet(inputMode, 0)                 -- (m_pObjectGame->m_gameSave.m_inputMode & 1) != 0
 		and
 		(
-			IEex_IsBitUnset(inputMode, 1)         -- (m_pObjectGame->m_gameSave.m_inputMode & 2) == 0
-			or uiManager.m_controlCaptured == nil -- or m_controlCaptured == nullptr
-			or uiManager.m_inputCaptured ~= 2     -- or m_inputCaptured ~= 2
+			IEex_IsBitUnset(inputMode, 1)           -- (m_pObjectGame->m_gameSave.m_inputMode & 2) == 0
+			or uiManager.m_pCapturedControl == nil  -- or m_pCapturedControl == nullptr
+			or uiManager.m_nControlCaptureType ~= 2 -- or m_nControlCaptureType ~= 2
 		)
 		and
 		(
-			worldEngine.m_bCheatKeysEnabled == 0  -- !m_bCheatKeysEnabled
-			or worldEngine.m_bCtrlDown == 0       -- or !m_bCtrlDown
+			worldEngine.m_bCheatKeysEnabled == 0    -- !m_bCheatKeysEnabled
+			or worldEngine.m_bCtrlDown == 0         -- or !m_bCtrlDown
 		)
 end
 

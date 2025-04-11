@@ -70,6 +70,9 @@ static void exportPatterns()
 	exportPattern(TEXT("EnhancedWidescreen_CCacheStatusShimMosaicRender"), Export_CCacheStatusShimMosaicRender);
 	exportPattern(TEXT("EnhancedWidescreen_CCacheStatusShimFontRender"), Export_CCacheStatusShimFontRender);
 
+	exportPattern(TEXT("EnhancedWidescreen_Override_CSearchBitmap::GetLOSCost"), getMemberPtr(&CSearchBitmap::Export_Override_GetLOSCost));
+	exportPattern(TEXT("EnhancedWidescreen_Override_CSearchBitmap::GetCost"), getMemberPtr(&CSearchBitmap::Export_Override_GetCost));
+
 	//////////
 	// Misc //
 	//////////

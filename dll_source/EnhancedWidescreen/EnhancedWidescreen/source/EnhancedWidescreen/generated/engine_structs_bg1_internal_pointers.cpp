@@ -1,6 +1,8 @@
 
 #include "engine_structs_bg1.h"
 
+CSearchBitmap::type_Original_GetCost CSearchBitmap::p_Original_GetCost;
+CSearchBitmap::type_Original_GetLOSCost CSearchBitmap::p_Original_GetLOSCost;
 int EnhancedWidescreen::allowedOutOfBoundsLeft;
 int EnhancedWidescreen::allowedOutOfBoundsTop;
 int EnhancedWidescreen::allowedOutOfBoundsRight;
@@ -104,6 +106,8 @@ static void attemptFillPointer(const String& patternName, OutType& pointerOut) {
 }
 
 void InitBindingsInternal() {
+	attemptFillPointer(TEXT("CSearchBitmap::Original_GetCost"), CSearchBitmap::p_Original_GetCost);
+	attemptFillPointer(TEXT("CSearchBitmap::Original_GetLOSCost"), CSearchBitmap::p_Original_GetLOSCost);
 	attemptFillPointer(TEXT("AssertionFailed"), p_AssertionFailed);
 	attemptFillPointer(TEXT("GetDeviceBitDepth"), p_GetDeviceBitDepth);
 	attemptFillPointer(TEXT("realloc"), p_realloc);

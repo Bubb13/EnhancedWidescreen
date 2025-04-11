@@ -70,18 +70,17 @@ IEex_DisableCodeProtection()
 			push ecx
 			push edx
 		]]},
-		IEex_GenLuaCall("EnhancedWidescreen_GUI_Extern_IsUIBlockingAreaViewport", {
+		IEex_GenLuaCall("EnhancedWidescreen_GUI_Extern_IsAreaCursorOverWorld", {
 			["args"] = {
 				{"push dword ptr ss:[esp+0x54] #ENDL", "CGameArea"} -- Note: Fragile stack access
 			},
 			["returnType"] = IEex_LuaCallReturnType.Boolean,
 		}),
 		{[[
-			xor eax, 1
 			jmp no_error
 
 			call_error:
-			mov eax, 1
+			xor eax, eax
 
 			no_error:
 			mov dword ptr ss:[ebp-0x8], eax
@@ -436,6 +435,16 @@ IEex_DisableCodeProtection()
 	-- CGameSprite::LeaveAreaName()
 	setViewPositionAdjustToCenter(0x74005F)
 	setViewPositionAdjustToCenter(0x7400E9)
+
+	-------------------
+	-- Sanity checks --
+	-------------------
+
+	-- CSearchBitmap::GetLOSCost()
+	IEex_JITAt(0x557895, {"jmp #L(EnhancedWidescreen_Override_CSearchBitmap::GetLOSCost)"})
+
+	-- CSearchBitmap::GetCost()
+	IEex_JITAt(0x55793B, {"jmp #L(EnhancedWidescreen_Override_CSearchBitmap::GetCost)"})
 
 --////////////////
 --// Resolution //

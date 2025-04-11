@@ -32,9 +32,52 @@ EnhancedWidescreen_GUI_ViewportTop = 0
 EnhancedWidescreen_GUI_ViewportRight = EnhancedWidescreen_GUI_ResolutionWidth
 EnhancedWidescreen_GUI_ViewportBottom = EnhancedWidescreen_GUI_ResolutionHeight
 
------------------------
--- Control Functions --
------------------------
+-------------------------
+-- CGameArea Functions --
+-------------------------
+
+function EnhancedWidescreen_GUI_IsScreenPointOverWorld(area, screenX, screenY)
+
+	local worldX, worldY = EnhancedWidescreen_GUI_ScreenToWorldPoint(area.m_cInfinity, screenX, screenY)
+	if worldX == -1 and worldY == -1 then
+		return false
+	end
+
+	local uiManager = EngineGlobals.g_pBaldurChitin.m_pEngineWorld.m_uiManager
+	return not EnhancedWidescreen_GUI_IsScreenPointBlockedByUI(uiManager, screenX, screenY)
+end
+
+-------------------------
+-- CInfinity Functions --
+-------------------------
+
+function EnhancedWidescreen_GUI_ScreenToWorldPoint(infinity, screenX, screenY)
+
+	local rViewPort = infinity.m_rViewPort
+	local rViewPortLeft = rViewPort.left
+	local rViewPortTop = rViewPort.top
+
+	if     screenX < rViewPortLeft or screenX >= rViewPort.right
+		or screenY < rViewPortTop  or screenY >= rViewPort.bottom
+	then
+		return -1, -1
+	end
+
+	local worldX = infinity.m_nNewX + (screenX - rViewPortLeft)
+	local worldY = infinity.m_nNewY + (screenY - rViewPortTop)
+
+	if     worldX < 0 or worldX >= infinity.m_nAreaWidth
+		or worldY < 0 or worldY >= infinity.m_nAreaHeight
+	then
+		return -1, -1
+	end
+
+	return worldX, worldY
+end
+
+------------------------------
+-- CUIControlBase Functions --
+------------------------------
 
 function EnhancedWidescreen_GUI_GetControlScreenArea(control)
 	local panel = control.m_pPanel
@@ -45,67 +88,14 @@ function EnhancedWidescreen_GUI_IsControlRenderActive(control)
 	return control.m_bActive ~= 0 or control.m_bInactiveRender ~= 0
 end
 
-function EnhancedWidescreen_GUI_IsPointOverControl(control, x, y)
+function EnhancedWidescreen_GUI_IsScreenPointOverControl(control, x, y)
 	local controlX, controlY, controlW, controlH = EnhancedWidescreen_GUI_GetControlScreenArea(control)
 	return x >= controlX and x <= (controlX + controlW) and y >= controlY and y <= (controlY + controlH)
 end
 
 --------------------------
--- CVidMosaic Functions --
+-- CUIManager Functions --
 --------------------------
-
-function EnhancedWidescreen_GUI_GetMosaicSize(mosaic)
-	local res = mosaic.m_pRes
-	res:Demand()
-	local mosaicHeader = res.m_pData
-	local width = mosaicHeader.nWidth
-	local height = mosaicHeader.nHeight
-	res:DecrementDemands()
-	return width, height
-end
-
----------------------
--- Panel Functions --
----------------------
-
-function EnhancedWidescreen_GUI_IsPanelBlockingViewport(panel, cursorX, cursorY)
-
-	if not EnhancedWidescreen_GUI_IsPanelRenderActive(panel) then
-		return false
-	end
-
-	if EnhancedWidescreen_GUI_PanelHasBackground(panel) then
-		return EnhancedWidescreen_GUI_IsPointOverPanel(panel, cursorX, cursorY)
-	else
-		local result = false
-		IEex_Utility_IterateCPtrList(panel.m_controlList, function(control)
-			result = (
-				EnhancedWidescreen_GUI_IsControlRenderActive(control)
-				and EnhancedWidescreen_GUI_IsPointOverControl(control, cursorX, cursorY)
-			)
-			return result -- break on true
-		end)
-		return result
-	end
-end
-
-function EnhancedWidescreen_GUI_IsPanelRenderActive(panel)
-	return panel.m_bActive ~= 0 or panel.m_bInactiveRender ~= 0
-end
-
-function EnhancedWidescreen_GUI_IsPointOverPanel(panel, x, y)
-	local panelX = panel.m_nX
-	local panelY = panel.m_nY
-	return x >= panelX and x <= (panelX + panel.m_nWidth) and y >= panelY and y <= (panelY + panel.m_nHeight)
-end
-
-function EnhancedWidescreen_GUI_PanelHasBackground(panel)
-	return panel.m_mosaic.m_pRes ~= nil
-end
-
------------------------
--- General Functions --
------------------------
 
 EnhancedWidescreen_GUI_WorldBottomPanels = {
 	3, 4, 7, 8, 9, 12, 6, 13, 14, 16, 17, 18, 19, 21, 22, 24, 25, 26
@@ -130,20 +120,6 @@ function EnhancedWidescreen_GUI_GetMinBottomPanelY(uiManager)
 	return minBottomPanelY, minBottomPanelId
 end
 
-function EnhancedWidescreen_GUI_IsUIBlockingViewport(cursorX, cursorY)
-	local uiManager = EngineGlobals.g_pBaldurChitin.m_pEngineWorld.m_uiManager
-	local result = false
-	IEex_Utility_IterateCPtrList(uiManager.m_panelList, function(panel)
-		result = EnhancedWidescreen_GUI_IsPanelBlockingViewport(panel, cursorX, cursorY)
-		return result -- break on true
-	end)
-	return result
-end
-
---------------------------
--- UI Manager Functions --
---------------------------
-
 function EnhancedWidescreen_GUI_GetPanelById(uiManager, panelId)
 	local toReturn = nil
 	IEex_Utility_IterateCPtrList(uiManager.m_panelList, function(panel)
@@ -153,6 +129,68 @@ function EnhancedWidescreen_GUI_GetPanelById(uiManager, panelId)
 		end
 	end)
 	return toReturn
+end
+
+function EnhancedWidescreen_GUI_IsScreenPointBlockedByUI(uiManager, screenX, screenY)
+	local result = false
+	IEex_Utility_IterateCPtrList(uiManager.m_panelList, function(panel)
+		result = EnhancedWidescreen_GUI_IsScreenPointBlockedByPanel(panel, screenX, screenY)
+		return result -- break on true
+	end)
+	return result
+end
+
+------------------------
+-- CUIPanel Functions --
+------------------------
+
+function EnhancedWidescreen_GUI_IsScreenPointBlockedByPanel(panel, screenX, screenY)
+
+	if not EnhancedWidescreen_GUI_IsPanelRenderActive(panel) then
+		return false
+	end
+
+	if EnhancedWidescreen_GUI_PanelHasBackground(panel) then
+		return EnhancedWidescreen_GUI_IsScreenPointOverPanel(panel, screenX, screenY)
+	else
+		local result = false
+		IEex_Utility_IterateCPtrList(panel.m_controlList, function(control)
+			result = (
+				EnhancedWidescreen_GUI_IsControlRenderActive(control)
+				and EnhancedWidescreen_GUI_IsScreenPointOverControl(control, screenX, screenY)
+			)
+			return result -- break on true
+		end)
+		return result
+	end
+end
+
+function EnhancedWidescreen_GUI_IsPanelRenderActive(panel)
+	return panel.m_bActive ~= 0 or panel.m_bInactiveRender ~= 0
+end
+
+function EnhancedWidescreen_GUI_IsScreenPointOverPanel(panel, x, y)
+	local panelX = panel.m_nX
+	local panelY = panel.m_nY
+	return x >= panelX and x <= (panelX + panel.m_nWidth) and y >= panelY and y <= (panelY + panel.m_nHeight)
+end
+
+function EnhancedWidescreen_GUI_PanelHasBackground(panel)
+	return panel.m_mosaic.m_pRes ~= nil
+end
+
+--------------------------
+-- CVidMosaic Functions --
+--------------------------
+
+function EnhancedWidescreen_GUI_GetMosaicSize(mosaic)
+	local res = mosaic.m_pRes
+	res:Demand()
+	local mosaicHeader = res.m_pData
+	local width = mosaicHeader.nWidth
+	local height = mosaicHeader.nHeight
+	res:DecrementDemands()
+	return width, height
 end
 
 -----------
@@ -180,9 +218,9 @@ function EnhancedWidescreen_GUI_Extern_BeforeWorldRender(uiManager)
 	infinity:SetViewPosition(infinity.m_nNewX, infinity.m_nNewY, false)
 end
 
-function EnhancedWidescreen_GUI_Extern_IsUIBlockingAreaViewport(area)
+function EnhancedWidescreen_GUI_Extern_IsAreaCursorOverWorld(area)
 	local cursorPos = area.m_cursorPos
-	return EnhancedWidescreen_GUI_IsUIBlockingViewport(cursorPos.x, cursorPos.y)
+	return EnhancedWidescreen_GUI_IsScreenPointOverWorld(area, cursorPos.x, cursorPos.y)
 end
 
 EnhancedWidescreen_GUI_CHUHasSidebars = {
@@ -246,7 +284,7 @@ function EnhancedWidescreen_GUI_Extern_OnCHUInitialized(uiManager)
 end
 
 function EnhancedWidescreen_GUI_Extern_RejectGetWorldCoordinates(screenX, screenY)
-	return EnhancedWidescreen_GUI_IsUIBlockingViewport(screenX, screenY)
+	return not EnhancedWidescreen_GUI_IsScreenPointOverWorld(EnhancedWidescreen_Area_GetVisible(), screenX, screenY)
 end
 
 EnhancedWidescreen_GUI_SetAutoScrollDest_CallSrc = {

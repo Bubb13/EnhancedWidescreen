@@ -643,6 +643,44 @@ void __stdcall Export_OnUnlockingObject(uintptr_t returnPtr, uintptr_t objectAdd
 // Overrides //
 ///////////////
 
+byte CSearchBitmap::Export_Override_GetLOSCost(CPoint* pPoint, byte* pTerrainTable, short* nTableIndex, byte bVisibilityOutDoor)
+{
+    bool boundsOk = true;
+
+    if (pPoint->x >= this->m_nWidth)
+    {
+        FPrint("[!][EnhancedWidescreen.dll] CSearchBitmap::GetLOSCost() Attempt to access out-of-bounds x: %d\n", pPoint->x);
+        boundsOk = false;
+    }
+
+    if (pPoint->y >= this->m_nHeight)
+    {
+        FPrint("[!][EnhancedWidescreen.dll] CSearchBitmap::GetLOSCost() Attempt to access out-of-bounds y: %d\n", pPoint->y);
+        boundsOk = false;
+    }
+
+    return boundsOk ? this->Original_GetLOSCost(pPoint, pTerrainTable, nTableIndex, bVisibilityOutDoor) : -1;
+}
+
+byte CSearchBitmap::Export_Override_GetCost(CPoint* pPoint, byte* pTerrainTable, byte nSnapshotPersonalSpace, short* nTableIndexOut, int bCheckBump)
+{
+    bool boundsOk = true;
+
+    if (pPoint->x >= this->m_nWidth)
+    {
+        FPrint("[!][EnhancedWidescreen.dll] CSearchBitmap::GetCost() Attempt to access out-of-bounds x: %d\n", pPoint->x);
+        boundsOk = false;
+    }
+
+    if (pPoint->y >= this->m_nHeight)
+    {
+        FPrint("[!][EnhancedWidescreen.dll] CSearchBitmap::GetCost() Attempt to access out-of-bounds y: %d\n", pPoint->y);
+        boundsOk = false;
+    }
+
+    return boundsOk ? this->Original_GetCost(pPoint, pTerrainTable, nSnapshotPersonalSpace, nTableIndexOut, bCheckBump) : -1;
+}
+
 static void getViewportThresholds(CInfinity* pInfinity,
     int& scrollLeftDoneThresholdOut,
     int& scrollUpDoneThresholdOut,
@@ -1732,7 +1770,7 @@ int __cdecl Export_Override_audioOpen(const char* sPath, uint nFlags)
     }
 
     pAudio->_0x0 |= 2;
-    pAudio->_0x8 = p_Unknown_007c9cc0(p_Unknown_007d7f50, pAudio->_0x4, &pAudio->_0x20, &pAudio->_0x1C, &pAudio->_0x18);
+    pAudio->decoder = p_Unknown_007c9cc0(p_Unknown_007d7f50, pAudio->_0x4, &pAudio->_0x20, &pAudio->_0x1C, &pAudio->_0x18);
     pAudio->_0x18 *= 2;
     pAudio->_0x24 = 0;
 

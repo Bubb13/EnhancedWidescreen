@@ -14,6 +14,9 @@ void registerBaseclasses() {
 		{"CRect", {
 			{"RECT", offsetofbase<CRect, RECT>()},
 		}},
+		{"CSearchBitmap", {
+			{"CVidBitmap", offsetofbase<CSearchBitmap, CVidBitmap>()},
+		}},
 		{"CWarp", {
 			{"CObject", offsetofbase<CWarp, CObject>()},
 		}},
